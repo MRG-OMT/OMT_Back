@@ -23,7 +23,11 @@ const memberSchema = new mongoose.Schema(
     expectationsFromSolidarity: String, // Column T
     currentAddress: String,         // Column U
     currentDistrict: String,        // Column V
-    nativePlace: String             // Column W
+    nativePlace: String,             // Column W
+    resume:String,                    // Column X
+    age:String,                      // Column AA
+    memberId:String,                 // Column AB
+    memberType:String,                // Column AE
   },
   { timestamps: true }
 );

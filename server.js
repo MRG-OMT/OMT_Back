@@ -23,9 +23,9 @@
   app.listen(PORT, async () => {
   console.log(`✅ Server running on port ${PORT}`);
   // For import member data from sheets to db
-//   await bulkImport();
-//   console.log("✅ Bulk import complete. Exiting...");
-//   process.exit(0); // stop after import
+  // await bulkImport();
+  // console.log("✅ Bulk import complete. Exiting...");
+  // process.exit(0); // stop after import
 });
 
 

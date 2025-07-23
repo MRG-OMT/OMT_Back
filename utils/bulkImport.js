@@ -46,7 +46,15 @@ const bulkImport = async () => {
         expectationsFromSolidarity, // T
         currentAddress,        // U
         currentDistrict,       // V
-        nativePlace            // W
+        nativePlace,           // W
+        resume,                //X
+        ,                      //Y
+        ,                       //Z
+        age,                    //AA
+        memberId,               //AB
+        ,                       //AC
+        ,                        //AD
+        memberType             //AE
       ] = row;
 
       // ✅ Convert Google Drive URL to viewable link
@@ -80,6 +88,10 @@ const bulkImport = async () => {
         currentAddress,
         currentDistrict,
         nativePlace,
+        resume,
+        age,
+        memberId,
+        memberType
       };
     });
 
