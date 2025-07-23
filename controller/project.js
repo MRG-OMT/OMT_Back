@@ -33,7 +33,7 @@ const editProject=async(req,res)=>{
     try{
   
            const updated= await Project.findByIdAndUpdate(req.params.id,{title,description,startDate, endDate,priority,status},{new:true})
-            res.json(updated)
+            res.status(201).json({message:"Project updated successfully",project:updated,});
         }
     
     catch(err){
