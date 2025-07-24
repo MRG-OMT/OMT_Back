@@ -1,5 +1,10 @@
 const Member = require("../models/member");
 
+
+
+
+
+
 //  Get all members
 const getAllMembers = async (req, res) => {
   try {
@@ -50,4 +55,102 @@ const updateMember = async (req, res) => {
   }
 };
 
-module.exports={getAllMembers,getMemberById,updateMember}
+/*********Delete Project */
+const deleteMember=async (req, res) => {
+  try {
+   
+    const deleted = await Member.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+       
+      return res.status(404).json({ message: "Member not found" });
+    }
+    res.status(200).json({ message: "Member deleted successfully" });
+  } catch (error) {
+   
+    res.status(400).json({ message: "Invalid project ID", error });
+  }
+}
+
+
+// ✅ Add Member (sync with Google Sheet)
+const addMember = async (req, res) => {
+  try {
+    const secret = req.headers["x-webhook-secret"];
+    if (secret !== process.env.WEBHOOK_SECRET) {
+      return res.status(403).json({ message: "Unauthorized request" });
+    }
+
+    // 🔹 Expecting the same fields as your Google Sheet's Appscript
+    const {
+      memberReferenceNumber,
+      timestamp,
+      emailAddress,
+      name,
+      fathersName,
+      pointOfContact,
+      mobileNumber,
+      dateOfBirth,
+      collegeName,
+      department,
+      workingOrStudyingStatus,
+      currentInstitutionOrCompany,
+      profession,
+      maritalStatus,
+      otherPersonalNumber,
+      personalEmail,
+      photoUrl,
+      areaOfInterest,
+      ambition,
+      expectationsFromSolidarity,
+      currentAddress,
+      currentDistrict,
+      nativePlace,
+      resume,
+      age,
+      memberId,
+      memberType
+    } = req.body;
+
+    if (!emailAddress) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+      // ➕ Insert new member 
+      const member = await Member.create({
+        memberReferenceNumber,
+        timestamp,
+        emailAddress,
+        name,
+        fathersName,
+        pointOfContact,
+        mobileNumber,
+        dateOfBirth,
+        collegeName,
+        department,
+        workingOrStudyingStatus,
+        currentInstitutionOrCompany,
+        profession,
+        maritalStatus,
+        otherPersonalNumber,
+        personalEmail,
+        photoUrl,
+        areaOfInterest,
+        ambition,
+        expectationsFromSolidarity,
+        currentAddress,
+        currentDistrict,
+        nativePlace,
+        resume,
+        age,
+        memberId,
+        memberType
+      });
+    
+
+    res.json({ message: "✅ Member synced successfully", member });
+  } catch (err) {
+    console.error("❌ Sync Error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+module.exports={getAllMembers,getMemberById,updateMember,deleteMember,addMember}
