@@ -2,6 +2,7 @@
    const cors = require('cors');
    const connectDB = require('./config/connectionDB');
    const bulkImport = require("./utils/bulkImport");
+   const cookieParser = require("cookie-parser");
    require('dotenv').config();
 
    const app = express();
@@ -9,7 +10,8 @@
    connectDB();
 
    app.use(express.json());
-   app.use(cors());
+   app.use(cookieParser());
+   app.use(cors({ origin: "https://omt-front.vercel.app", credentials: true }));
 
    app.use(express.static("Public"));
 
@@ -19,7 +21,9 @@
    app.use("/task",require("./routes/task"));
    app.use("/subTask",require("./routes/subTask"));
    app.use("/assignFor",require("./routes/assignFor"));
+   app.use("/request",require("./routes/statusChangeRequest"))
 
+   app.use("/auth", require("./routes/login"));
   app.listen(PORT, async () => {
   console.log(`✅ Server running on port ${PORT}`);
   // For import member data from sheets to db
