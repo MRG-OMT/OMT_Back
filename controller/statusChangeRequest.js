@@ -48,4 +48,16 @@ const statusApproved= async (req, res) => {
   res.json({ message: `Request ${action}d successfully` });
 }
 
-module.exports={statusUpdatedByMember,getStatusRequest,statusApproved}
+const getStatusCount = async(req,res)=>{
+  if (req.user.role !== 'Member') return res.status(403).json({ message: 'Forbidden' });
+
+  const requests = await StatusChangeRequest.find({
+    // requestedBy: req.user.id,
+    status: { $in: ['approved', 'rejected'] },
+    // seen: false, // Add a `seen` flag to avoid duplicates
+  }).populate('subTaskId');
+
+  res.json(requests);
+}
+
+module.exports={statusUpdatedByMember,getStatusRequest,statusApproved,getStatusCount}
