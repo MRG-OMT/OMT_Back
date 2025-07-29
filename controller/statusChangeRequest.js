@@ -2,11 +2,11 @@ const StatusChangeRequest = require("../models/StatusChangeRequest");
 
 // POST /status-request
 const statusUpdatedByMember= async (req, res) => {
-  const { taskId, requestedStatus } = req.body;
+  const { subTaskId, requestedStatus } = req.body;
   const userId = req.user.id; // from auth middleware
 
   const request = new StatusChangeRequest({
-    taskId,
+    subTaskId,
     requestedStatus,
     requestedBy: userId,
     status: 'pending',
@@ -20,7 +20,7 @@ const getStatusRequest = async (req, res) => {
   if (req.user.role !== 'Admin') return res.status(403).json({ message: 'Forbidden' });
 
   const requests = await StatusChangeRequest.find({ status: 'pending' })
-    .populate('taskId')
+    .populate('subTaskId')
     .populate('requestedBy');
 
   res.json(requests);
@@ -32,14 +32,14 @@ const statusApproved= async (req, res) => {
   if (req.user.role !== 'Admin') return res.status(403).json({ message: 'Forbidden' });
 
   const { action } = req.body; // 'approve' or 'reject'
-  const request = await StatusChangeRequest.findById(req.params.id).populate('taskId');
+  const request = await StatusChangeRequest.findById(req.params.id).populate('subTaskId');
 
   if (!request) return res.status(404).json({ message: 'Request not found' });
 
   if (action === 'approve') {
     request.status = 'approved';
-    request.taskId.status = request.requestedStatus;
-    await request.taskId.save();
+    request.subTaskId.status = request.requestedStatus;
+    await request.subTaskId.save();
   } else if (action === 'reject') {
     request.status = 'rejected';
   }

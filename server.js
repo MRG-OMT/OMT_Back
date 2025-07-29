@@ -11,11 +11,13 @@
 
    app.use(express.json());
    app.use(cookieParser());
-   app.use(cors({ origin: "https://omt-front.vercel.app", credentials: true }));
+   app.use(cors(
+    { origin: "https://omt-front.vercel.app", credentials: true }
+  ));
 
    app.use(express.static("Public"));
 
-  // app.use("/login",require("./routes/login"));
+
    app.use("/member",require("./routes/member"));
    app.use("/project",require("./routes/project"));
    app.use("/task",require("./routes/task"));

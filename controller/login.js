@@ -16,14 +16,14 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials or role" });
 
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "2h",
     });
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'None',
+      secure: true,
+      maxAge: 2 * 60 * 60 * 1000,
     }).json({ message: "Login successful",success: true,user: { role: user.role, username: user.username }} );
   } catch (err) {
     res.status(500).json({ message: err.message });
