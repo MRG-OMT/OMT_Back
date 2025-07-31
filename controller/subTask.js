@@ -28,9 +28,8 @@ const createSubTask = async (req, res) => {
 const getAllSubTasks = async (req, res) => {
   try {
     const subTasks = await SubTask.find()
-      .populate("assignedTo", "name email")  // populate member info
-      .populate("taskId", "title");          // populate task title
-
+      .populate("assignedTo", "name email photoUrl")  // populate member info
+      .populate({path:"taskId",select:"title projectId ",populate:{ path: 'projectId', select:'title'}})
     res.status(200).json({ success: true, data: subTasks });
   } catch (error) {
     res.status(500).json({ success: false, message: "Failed to fetch SubTasks", error: error.message });
@@ -41,8 +40,8 @@ const getAllSubTasks = async (req, res) => {
 const getSubTaskById = async (req, res) => {
   try {
     const subTask = await SubTask.findById(req.params.id)
-      .populate("assignedTo", "name email")
-      .populate("taskId", "title");
+      .populate("assignedTo", "name email photoUrl ")
+      .populate({path:"taskId",select:"title projectId ",populate:{ path: 'projectId', select:'title'}})
 
     if (!subTask) {
       return res.status(404).json({ success: false, message: "SubTask not found" });
