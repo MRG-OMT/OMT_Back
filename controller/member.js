@@ -37,12 +37,54 @@ const getMemberById = async (req, res) => {
 const updateMember = async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedData = req.body;
+    const {
+      name,
+      fathersName,
+      pointOfContact,
+      mobileNumber,
+      dateOfBirth,
+      collegeName,
+      department,
+      workingOrStudyingStatus,
+      currentInstitutionOrCompany,
+      profession,
+      maritalStatus,
+      otherPersonalNumber,
+      personalEmail,
+      areaOfInterest,
+      ambition,
+      expectationsFromSolidarity,
+      currentAddress,
+      currentDistrict,
+      nativePlace,
+      memberType,
+      forGrouping} = req.body;
 
-    const updatedMember = await Member.findByIdAndUpdate(id, updatedData, {
-      new: true, // returns updated document
-      runValidators: true, // applies schema validations
-    });
+    const updatedMember = await Member.findByIdAndUpdate(id,{
+      name,
+      fathersName,
+      pointOfContact,
+      mobileNumber,
+      dateOfBirth,
+      collegeName,
+      department,
+      workingOrStudyingStatus,
+      currentInstitutionOrCompany,
+      profession,
+      maritalStatus,
+      otherPersonalNumber,
+      personalEmail,
+      areaOfInterest,
+      ambition,
+      expectationsFromSolidarity,
+      currentAddress,
+      currentDistrict,
+      nativePlace,
+      memberType,
+      forGrouping} ,
+      { new: true, // returns updated document
+        runValidators: true, // applies schema validations
+      });
 
     if (!updatedMember) {
       return res.status(404).json({ message: "Member not found" });

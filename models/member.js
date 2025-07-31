@@ -28,6 +28,7 @@ const memberSchema = new mongoose.Schema(
     age:String,                      // Column AA
     memberId:String,                 // Column AB
     memberType:String,                // Column AE
+    forGrouping:[String],
   },
   { timestamps: true }
 );
