@@ -3,13 +3,13 @@ const AssignFor = require('../models/assignFor');
 
 // Helper to format ID like AF00001
 const generateCustomId = async () => {
-  const lastProject = await Project.findOne({ customId: { $exists: true } })
-    .sort({ createdAt: -1 }) // newest project first
+  const lastAssignFor = await AssignFor.findOne({ customId: { $exists: true } })
+    .sort({ createdAt: -1 }) // newest assignFor first
     .select("customId");
 
   let newNumber = 1;
-  if (lastProject && lastProject.customId) {
-    const lastNumber = parseInt(lastProject.customId.replace("AF", ""));
+  if (lastAssignFor && lastAssignFor.customId) {
+    const lastNumber = parseInt(lastAssignFor.customId.replace("AF", ""));
     newNumber = lastNumber + 1;
   }
 

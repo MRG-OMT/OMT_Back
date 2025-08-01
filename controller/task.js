@@ -1,15 +1,15 @@
 const Task = require("../models/task");
 
 
-// Helper to format ID like S00001
+// Helper to format ID like T00001
 const generateCustomId = async () => {
-  const lastProject = await Project.findOne({ customId: { $exists: true } })
-    .sort({ createdAt: -1 }) // newest project first
+  const lastTask = await Task.findOne({ customId: { $exists: true } })
+    .sort({ createdAt: -1 }) // newest Task first
     .select("customId");
 
   let newNumber = 1;
-  if (lastProject && lastProject.customId) {
-    const lastNumber = parseInt(lastProject.customId.replace("T", ""));
+  if (lastTask && lastTask.customId) {
+    const lastNumber = parseInt(lastTask.customId.replace("T", ""));
     newNumber = lastNumber + 1;
   }
 

@@ -3,13 +3,13 @@ const SubTask = require("../models/subTask");
 
 // Helper to format ID like S00001
 const generateCustomId = async () => {
-  const lastProject = await Project.findOne({ customId: { $exists: true } })
+  const lastSubTask = await SubTask.findOne({ customId: { $exists: true } })
     .sort({ createdAt: -1 }) // newest project first
     .select("customId");
 
   let newNumber = 1;
-  if (lastProject && lastProject.customId) {
-    const lastNumber = parseInt(lastProject.customId.replace("ST", ""));
+  if (lastSubTask && lastSubTask.customId) {
+    const lastNumber = parseInt(lastSubTask.customId.replace("ST", ""));
     newNumber = lastNumber + 1;
   }
 
