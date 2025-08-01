@@ -1,11 +1,27 @@
 const AssignFor = require('../models/assignFor');
 
+
+// Helper to format ID like AF00001
+const generateCustomId = async () => {
+  const lastProject = await Project.findOne({ customId: { $exists: true } })
+    .sort({ createdAt: -1 }) // newest project first
+    .select("customId");
+
+  let newNumber = 1;
+  if (lastProject && lastProject.customId) {
+    const lastNumber = parseInt(lastProject.customId.replace("AF", ""));
+    newNumber = lastNumber + 1;
+  }
+
+  return `AF${newNumber.toString().padStart(5, "0")}`;
+};
+
 // ✅ Create AssignFor
 const createAssignFor = async (req, res) => {
   try {
     const {  description, assignedFor, taskId,subTaskId, date,currentDistrict, status } = req.body;
-
-    const newAssignFor = new AssignFor({description, assignedFor, taskId,subTaskId, date,currentDistrict, status });
+    const customId = await generateCustomId();
+    const newAssignFor = new AssignFor({customId, description, assignedFor, taskId,subTaskId, date,currentDistrict, status });
 
     const savedAssignFor = await newAssignFor.save();
     res.status(201).json({ success: true, message: "AssignFOr created successfully", data: savedAssignFor });

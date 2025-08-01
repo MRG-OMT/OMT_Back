@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const taskSchema = mongoose.Schema({
+    customId: {
+  type: String,
+  unique: true,
+},
     title:{
         type:String,
         required:true

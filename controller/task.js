@@ -1,11 +1,28 @@
 const Task = require("../models/task");
 
+
+// Helper to format ID like S00001
+const generateCustomId = async () => {
+  const lastProject = await Project.findOne({ customId: { $exists: true } })
+    .sort({ createdAt: -1 }) // newest project first
+    .select("customId");
+
+  let newNumber = 1;
+  if (lastProject && lastProject.customId) {
+    const lastNumber = parseInt(lastProject.customId.replace("T", ""));
+    newNumber = lastNumber + 1;
+  }
+
+  return `T${newNumber.toString().padStart(5, "0")}`;
+};
+
 // ✅ Create Task
 const createTask = async (req, res) => {
   try {
     const { title, description, projectId, startDate, endDate, priority, status } = req.body;
-
+    const customId = await generateCustomId();
     const newTask = new Task({
+      customId,
       title,
       description,
       projectId,

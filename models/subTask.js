@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const subTaskSchema = mongoose.Schema({
-    
+    customId: {
+  type: String,
+  unique: true,
+},
     title:{
         type:String,
         required:true

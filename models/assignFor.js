@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const assignForSchema = mongoose.Schema({
+    customId: {
+  type: String,
+  unique: true,
+},
     description:{
         type:String
     },

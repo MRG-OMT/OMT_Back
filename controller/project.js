@@ -11,6 +11,21 @@ const getProject=async(req,res)=>{
     res.json(project)
 }
 
+// Helper to format ID like P00001
+const generateCustomId = async () => {
+  const lastProject = await Project.findOne({ customId: { $exists: true } })
+    .sort({ createdAt: -1 }) // newest project first
+    .select("customId");
+
+  let newNumber = 1;
+  if (lastProject && lastProject.customId) {
+    const lastNumber = parseInt(lastProject.customId.replace("P", ""));
+    newNumber = lastNumber + 1;
+  }
+
+  return `P${newNumber.toString().padStart(5, "0")}`;
+};
+
 
 /*********Add New Project */
 const addProject = async(req,res)=>{
@@ -19,7 +34,8 @@ const addProject = async(req,res)=>{
         if(!title){
             return res.status(400).json({message:"Project title is required"});
         }
-        const newProject = await Project.create({title,description,startDate, endDate,priority,status});
+        const customId = await generateCustomId();
+        const newProject = await Project.create({customId,title,description,startDate, endDate,priority,status});
         res.status(201).json({message:"Project added successfully",project:newProject,});
         }catch(err){
             console.error("Error adding Project:",err);
