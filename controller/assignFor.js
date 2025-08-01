@@ -19,9 +19,9 @@ const generateCustomId = async () => {
 // ✅ Create AssignFor
 const createAssignFor = async (req, res) => {
   try {
-    const {  description, assignedFor, taskId,subTaskId, date,currentDistrict, status } = req.body;
+    const {  description, assignedFor, taskId,subTaskId, date,currentDistrict, status,projectId } = req.body;
     const customId = await generateCustomId();
-    const newAssignFor = new AssignFor({customId, description, assignedFor, taskId,subTaskId, date,currentDistrict, status });
+    const newAssignFor = new AssignFor({customId, description, assignedFor, taskId,subTaskId, date,currentDistrict, status,projectId });
 
     const savedAssignFor = await newAssignFor.save();
     res.status(201).json({ success: true, message: "AssignFOr created successfully", data: savedAssignFor });

@@ -18,7 +18,7 @@ const generateCustomId = async () => {
 // ✅ Create SubTask
 const createSubTask = async (req, res) => {
   try {
-    const { title, description, assignedTo, taskId, startDate, endDate, priority, status } = req.body;
+    const { title, description, assignedTo, taskId, startDate, endDate, priority, status,projectId,district,unit } = req.body;
     const customId = await generateCustomId();
     const newSubTask = new SubTask({
       customId,
@@ -29,7 +29,10 @@ const createSubTask = async (req, res) => {
       startDate,
       endDate,
       priority,
-      status
+      status,
+      projectId,
+      district,
+      unit,
     });
 
     const savedSubTask = await newSubTask.save();

@@ -13,6 +13,11 @@ const assignForSchema = mongoose.Schema({
         ref:"Member",
         required:true
     }],
+    projectId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Project",
+        required:true
+    },
     taskId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Task",
@@ -22,7 +27,6 @@ const assignForSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"SubTask",
         
-       
     },
     date:{
         type:Date,

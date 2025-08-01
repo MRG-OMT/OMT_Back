@@ -17,6 +17,11 @@ const subTaskSchema = mongoose.Schema({
         ref:"Member",
         required:true
     }],
+    projectId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Project",
+        required:true
+    },
     taskId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Task",
@@ -37,7 +42,14 @@ const subTaskSchema = mongoose.Schema({
     status:{
         type:String,
         required:true
+    },
+    district:{
+        type:String,
+    },
+    unit:{
+        type:String,
     }
+
 
 },{timestamps:true})
 
