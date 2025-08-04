@@ -35,9 +35,10 @@ const createAssignFor = async (req, res) => {
 const getAllAssignFor = async (req, res) => {
   try {
     const assignFor = await AssignFor.find()
-      .populate("assignedFor", "name email")  // populate member info
-      .populate("taskId", "title") // populate task title
-      .populate("subTaskId","title") // populate subtask title
+      .populate("assignedFor", "name email photoUrl currentDistrict")  // populate member info
+      .populate("taskId", "title customId") // populate task title
+      .populate("subTaskId","title customId") // populate subtask title
+      .populate("projectId","title customId")  // populate project title
                 
 
     res.status(200).json({ success: true, data: assignFor });
@@ -50,9 +51,10 @@ const getAllAssignFor = async (req, res) => {
 const getAssignForById = async (req, res) => {
   try {
     const assignFor = await AssignFor.findById(req.params.id)
-      .populate("assignedFor", "name email")
-      .populate("taskId", "title")
-      .populate("subTaskId","title") // populate subtask title
+      .populate("assignedFor", "name email photoUrl currentDistrict")
+      .populate("taskId", "title customId")
+      .populate("subTaskId","title customId") // populate subtask title
+      .populate("projectId","title customId")  // populate project title
 
     if (!assignFor) {
       return res.status(404).json({ success: false, message: "AssignFor not found" });
