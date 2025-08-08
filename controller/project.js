@@ -1,3 +1,4 @@
+const Activity = require("../models/activity");
 const Project = require("../models/project");
 
 /**********Get All Projects */
@@ -36,6 +37,16 @@ const addProject = async(req,res)=>{
         }
         const customId = await generateCustomId();
         const newProject = await Project.create({customId,title,description,startDate, endDate,priority,status});
+
+        await Activity.create({
+            type: 'PROJECT',
+            action: 'created',
+            meta: {
+              title, // project title
+            },
+            targetId: newProject._id,
+          });
+
         res.status(201).json({message:"Project added successfully",project:newProject,});
         }catch(err){
             console.error("Error adding Project:",err);

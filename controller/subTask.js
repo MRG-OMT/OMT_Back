@@ -1,5 +1,7 @@
 const SubTask = require("../models/subTask");
-
+const Activity = require("../models/activity");
+const Task = require("../models/task");
+const Member =require('../models/member');
 
 // Helper to format ID like S00001
 const generateCustomId = async () => {
@@ -36,6 +38,19 @@ const createSubTask = async (req, res) => {
     });
 
     const savedSubTask = await newSubTask.save();
+    const task = await Task.findById(taskId);
+    const members = await Member.find({_id:{$in:assignedTo}});
+
+    await Activity.create({
+        type: 'SUBTASK',
+        action: 'created',
+        meta: {
+          title,             // subtask title
+          taskTitle: task.title,
+          memberNames: members.map(m => m.name)  // array of names
+        },
+        targetId: savedSubTask._id,
+      });
     res.status(201).json({ success: true, message: "SubTask created successfully", data: savedSubTask });
   } catch (error) {
     console.error(error);

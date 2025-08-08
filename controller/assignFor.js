@@ -1,5 +1,7 @@
 const AssignFor = require('../models/assignFor');
-
+const Activity = require('../models/activity')
+const SubTask = require("../models/subTask");
+const Member =require('../models/member');
 
 // Helper to format ID like AF00001
 const generateCustomId = async () => {
@@ -24,6 +26,17 @@ const createAssignFor = async (req, res) => {
     const newAssignFor = new AssignFor({customId, description, assignedFor, taskId,subTaskId, date,currentDistrict, status,projectId });
 
     const savedAssignFor = await newAssignFor.save();
+    const subTask = await SubTask.findById(subTaskId);
+    const members = await Member.find({_id:{$in:assignedFor}});
+    await Activity.create({
+      type:'ASSIGNFOR',
+      action:'created',
+      meta:{
+        subTaskTitle:subTask.title,
+        memberNames:members.map(m=>m.name)
+      },
+      targetId: savedAssignFor._id,
+    })
     res.status(201).json({ success: true, message: "AssignFOr created successfully", data: savedAssignFor });
   } catch (error) {
     console.error(error);

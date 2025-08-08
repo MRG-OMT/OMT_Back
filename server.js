@@ -26,7 +26,8 @@
    app.use("/subTask",require("./routes/subTask"));
    app.use("/assignFor",require("./routes/assignFor"));
    app.use("/request",require("./routes/statusChangeRequest"));
-   app.use("/dropdown",require("./routes//dropdown"));
+   app.use("/dropdown",require("./routes/dropdown"));
+   app.use("/activityList",require("./routes/activity"))
 
    app.use("/auth", require("./routes/login"));
   app.listen(PORT, async () => {

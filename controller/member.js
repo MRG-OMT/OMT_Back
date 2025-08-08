@@ -1,5 +1,5 @@
 const Member = require("../models/member");
-
+const Activity = require("../models/member");
 
 
 
@@ -188,7 +188,14 @@ const addMember = async (req, res) => {
         memberType
       });
     
-
+        await Activity.create({
+            type: 'MEMBER',
+            action: 'joined',
+            meta: {
+              name,
+            },
+            targetId: member._id,
+        })
     res.json({ message: "✅ Member synced successfully", member });
   } catch (err) {
     console.error("❌ Sync Error:", err);

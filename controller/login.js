@@ -32,7 +32,12 @@ const login = async (req, res) => {
 
  //logout
 const logOut= (req, res) => {
-  res.clearCookie("token").json({ message: "Logged out" });
+  // res.clearCookie("token").json({ message: "Logged out" });
+  res.clearCookie("token", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+}).json({ message: "Logged out" });
 }
 
 //check

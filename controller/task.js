@@ -1,4 +1,6 @@
+const Activity = require("../models/activity");
 const Task = require("../models/task");
+const Project = require("../models/project")
 
 
 // Helper to format ID like T00001
@@ -33,6 +35,16 @@ const createTask = async (req, res) => {
     });
 
     const savedTask = await newTask.save();
+    const project = await Project.findById(projectId);
+    await Activity.create({
+        type: 'TASK',
+        action: 'created',
+        meta: {
+          title,        // task title
+          projectTitle: project.title
+        },
+        targetId: savedTask._id,
+      });
     res.status(201).json({ success: true, message: "Task created successfully", data: savedTask });
   } catch (error) {
     console.error(error);
