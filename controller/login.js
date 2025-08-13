@@ -1,6 +1,43 @@
 const User = require("../models/login");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Activity = require("../models/activity");
+const Member = require("../models/member");
+
+
+//Register new user
+const register = async(req,res)=>{
+  const {memberId,username,password,role} = req.body;
+  if (!username || !password) {
+        return res.status(400).json({ message: "username and password is required" })
+    }
+  try{
+    let user = await User.findOne({username});
+    if(user){
+      return res.status(400).json({error:"Username is already exist"})
+    }
+    const hashPwd = await bcrypt.hash(password, 10)
+    const newUser = await User.create({memberId,username,password:hashPwd,role});
+    const member = await Member.findById(memberId);
+   
+     await Activity.create({
+              type: 'USER',
+              action: 'created',
+              meta: {
+                username, // username
+                memberName: member.name, // member names
+              },
+              targetId: newUser._id,
+            });
+  
+          res.status(201).json({message:"User added successfully",user:newUser});
+          }catch(err){
+              console.error("Error adding User:",err);
+              res.status(500).json({message:"Server Error",error:err.message});
+          }
+
+}
+
 
 
 //login
@@ -15,7 +52,7 @@ const login = async (req, res) => {
     if (!isMatch || user.role !== role)
       return res.status(400).json({ message: "Invalid credentials or role" });
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.SECRET_KEY, {
+    const token = jwt.sign({ userId: user._id, role: user.role, memberId: user.memberId }, process.env.SECRET_KEY, {
       expiresIn: "2h",
     });
 
@@ -24,7 +61,7 @@ const login = async (req, res) => {
       sameSite: 'None',
       secure: true,
       maxAge: 2 * 60 * 60 * 1000,
-    }).json({ message: "Login successful",success: true,user: { role: user.role, username: user.username }} );
+    }).json({ message: "Login successful",success: true,user: { role: user.role, username: user.username,memberId:user.memberId }} );
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -32,7 +69,6 @@ const login = async (req, res) => {
 
  //logout
 const logOut= (req, res) => {
-  // res.clearCookie("token").json({ message: "Logged out" });
   res.clearCookie("token", {
   httpOnly: true,
   secure: true,
@@ -42,10 +78,6 @@ const logOut= (req, res) => {
 
 //check
 const check= async (req, res) => {
-//     if (!req.user) {
-//     // TEMP fallback for development (use a dummy user role)
-//     return res.json({ userId: 'dev123', role: 'Admin' });
-//   }
-  res.json({ userId: req.user.userId, role: req.user.role });
+  res.json({ userId: req.user.userId, role: req.user.role,memberId: req.user.memberId });
 }
-module.exports ={login,logOut,check}
+module.exports ={login,logOut,check,register}

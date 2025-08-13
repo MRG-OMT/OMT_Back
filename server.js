@@ -28,8 +28,10 @@
    app.use("/request",require("./routes/statusChangeRequest"));
    app.use("/dropdown",require("./routes/dropdown"));
    app.use("/activityList",require("./routes/activity"))
-
    app.use("/auth", require("./routes/login"));
+   app.use("/service",require("./routes/service"));
+   
+   
   app.listen(PORT, async () => {
   console.log(`✅ Server running on port ${PORT}`);
   // For import member data from sheets to db
