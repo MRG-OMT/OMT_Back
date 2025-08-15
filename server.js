@@ -30,7 +30,11 @@
    app.use("/activityList",require("./routes/activity"))
    app.use("/auth", require("./routes/login"));
    app.use("/service",require("./routes/service"));
-   
+
+   // Its dummy API call for awake server 
+   app.get('/health',(req,res)=>{
+      res.status(200).json({status:'ok',timestamp:Date.now()});
+   })
    
   app.listen(PORT, async () => {
   console.log(`✅ Server running on port ${PORT}`);
