@@ -1,5 +1,5 @@
 const Member = require("../models/member");
-const Activity = require("../models/member");
+const Activity = require("../models/activity");
 
 
 

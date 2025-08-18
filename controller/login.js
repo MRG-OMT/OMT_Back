@@ -67,6 +67,11 @@ const login = async (req, res) => {
   }
 }
 
+const getAllUser = async(req,res)=>{
+    const users = await User.find().populate("memberId","name photoUrl")
+    return res.json(users);
+}
+
  //logout
 const logOut= (req, res) => {
   res.clearCookie("token", {
@@ -80,4 +85,4 @@ const logOut= (req, res) => {
 const check= async (req, res) => {
   res.json({ userId: req.user.userId, role: req.user.role,memberId: req.user.memberId });
 }
-module.exports ={login,logOut,check,register}
+module.exports ={login,logOut,check,register,getAllUser}
