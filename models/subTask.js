@@ -48,9 +48,10 @@ const subTaskSchema = mongoose.Schema({
     },
     unit:{
         type:String,
+    },place:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Places"
     }
-
-
 },{timestamps:true})
 
 module.exports = mongoose.model("SubTask",subTaskSchema)

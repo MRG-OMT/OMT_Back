@@ -1,7 +1,7 @@
    const express = require('express');
    const cors = require('cors');
    const connectDB = require('./config/connectionDB');
-   const bulkImport = require("./utils/bulkImport");
+   //const {bulkImport,bulkImportPlaces} = require("./utils/bulkImport");
    const cookieParser = require("cookie-parser");
    require('dotenv').config();
 
@@ -29,6 +29,7 @@
    app.use("/dropdown",require("./routes/dropdown"));
    app.use("/activityList",require("./routes/activity"))
    app.use("/auth", require("./routes/login"));
+   app.use("/place",require("./routes/places"));
    app.use("/service",require("./routes/service"));
 
    // Its dummy API call for awake server 
@@ -42,6 +43,10 @@
   // await bulkImport();
   // console.log("✅ Bulk import complete. Exiting...");
   // process.exit(0); // stop after import
+  // For import Places data from sheets to db
+   // await bulkImportPlaces();
+   //  console.log("✅ Bulk import complete. Exiting...");
+   //  process.exit(0); // stop after import
 });
 
 
