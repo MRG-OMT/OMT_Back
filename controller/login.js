@@ -42,14 +42,14 @@ const register = async(req,res)=>{
 
 //login
 const login = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch || user.role !== role)
+    if (!isMatch )
       return res.status(400).json({ message: "Invalid credentials or role" });
 
     const token = jwt.sign({ userId: user._id, role: user.role, memberId: user.memberId }, process.env.SECRET_KEY, {
