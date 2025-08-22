@@ -20,7 +20,7 @@ const generateCustomId = async () => {
 // ✅ Create SubTask
 const createSubTask = async (req, res) => {
   try {
-    const { title, description, assignedTo, taskId, startDate, endDate, priority, status,projectId,district,unit } = req.body;
+    const { title, description, assignedTo, taskId, startDate, endDate, priority, status,projectId,district,unit,place } = req.body;
     const customId = await generateCustomId();
     const newSubTask = new SubTask({
       customId,
@@ -35,6 +35,7 @@ const createSubTask = async (req, res) => {
       projectId,
       district,
       unit,
+      place,
     });
 
     const savedSubTask = await newSubTask.save();
@@ -65,6 +66,7 @@ const getAllSubTasks = async (req, res) => {
       .populate("assignedTo", "name email photoUrl")  // populate member info
       .populate({path:"taskId",select:"title projectId ",populate:{ path: 'projectId', select:'title'}})
       .populate("projectId","title")
+      .populate("place","place type organisationalStatus")
       
     res.status(200).json({ success: true, data: subTasks });
   } catch (error) {
