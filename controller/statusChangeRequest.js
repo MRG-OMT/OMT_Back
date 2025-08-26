@@ -2,13 +2,13 @@ const StatusChangeRequest = require("../models/StatusChangeRequest");
 
 // POST /status-request
 const statusUpdatedByMember= async (req, res) => {
-  const { subTaskId, requestedStatus } = req.body;
-  const userId = req.user.id; // from auth middleware
+  const { subTaskId, requestedStatus,requestedBy } = req.body;
+  // const userId = req.user.id; // from auth middleware
 
   const request = new StatusChangeRequest({
     subTaskId,
     requestedStatus,
-    requestedBy: userId,
+    requestedBy,
     status: 'pending',
   });
 
@@ -21,7 +21,7 @@ const getStatusRequest = async (req, res) => {
 
   const requests = await StatusChangeRequest.find({ status: 'pending' })
     .populate('subTaskId')
-    .populate('requestedBy');
+    .populate('requestedBy',"name email photoUrl");
 
   res.json(requests);
 }
