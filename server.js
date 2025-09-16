@@ -1,7 +1,7 @@
    const express = require('express');
    const cors = require('cors');
-   const http = require("http");          
-   const { Server } = require("socket.io"); 
+   const http = require("http");    //for real sync data like chat app      
+   const { Server } = require("socket.io"); //for real sync data like chat app
    const connectDB = require('./config/connectionDB');
    //const {bulkImport,bulkImportPlaces} = require("./utils/bulkImport");
    const cookieParser = require("cookie-parser");

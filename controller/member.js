@@ -157,8 +157,11 @@ const addMember = async (req, res) => {
       return res.status(400).json({ message: "Email is required" });
     }
 
+    const identifier = { memberReferenceNumber };
       // ➕ Insert new member 
-      const member = await Member.create({
+      const member = await Member.findOneAndUpdate(
+         identifier,
+        {
         memberReferenceNumber,
         timestamp,
         emailAddress,
@@ -186,8 +189,11 @@ const addMember = async (req, res) => {
         age,
         memberId,
         memberType
-      });
-    
+      }
+    ,
+      { new: true, upsert: true } 
+    );
+    if (member.wasNew) {
         await Activity.create({
             type: 'MEMBER',
             action: 'joined',
@@ -195,7 +201,8 @@ const addMember = async (req, res) => {
               name,
             },
             targetId: member._id,
-        })
+        });
+      }
     res.json({ message: "✅ Member synced successfully", member });
   } catch (err) {
     console.error("❌ Sync Error:", err);
