@@ -6,7 +6,7 @@ const Member =require('../models/member');
 // Helper to format ID like S00001
 const generateCustomId = async () => {
   const lastSubTask = await SubTask.findOne({ customId: { $exists: true } })
-    .sort({ createdAt: -1 }) // newest project first
+    .sort({ createdAt: -1 }) // newest subtask first
     .select("customId");
 
   let newNumber = 1;
@@ -66,7 +66,7 @@ const getAllSubTasks = async (req, res) => {
       .populate("assignedTo", "name email photoUrl")  // populate member info
       .populate({path:"taskId",select:"title projectId ",populate:{ path: 'projectId', select:'title'}})
       .populate("projectId","title")
-      .populate("place","place type organisationalStatus")
+      .populate("place","place type organisationalStatus district")
       
     res.status(200).json({ success: true, data: subTasks });
   } catch (error) {
