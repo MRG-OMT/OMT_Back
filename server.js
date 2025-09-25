@@ -23,6 +23,7 @@
 
 
    app.use("/member",require("./routes/member"));
+   app.use("/memberComments",require("./routes/memberComments"));
    app.use("/project",require("./routes/project"));
    app.use("/task",require("./routes/task"));
    app.use("/subTask",require("./routes/subTask"));

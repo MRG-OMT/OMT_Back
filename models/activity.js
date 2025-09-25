@@ -4,7 +4,7 @@ const activitySchema = new mongoose.Schema(
     {
         type:{
             type:String,
-            enum:['PROJECT','TASK','SUBTASK','MEMBER','ASSIGNFOR','USER'],
+            enum:['PROJECT','TASK','SUBTASK','MEMBER','ASSIGNFOR','USER','COMMENT'],
             required:true,
         },
         action:{
