@@ -3,7 +3,6 @@
    const http = require("http");    //for real sync data like chat app      
    const { Server } = require("socket.io"); //for real sync data like chat app
    const connectDB = require('./config/connectionDB');
-   //const {bulkImport,bulkImportPlaces} = require("./utils/bulkImport");
    const cookieParser = require("cookie-parser");
    require('dotenv').config();
 
@@ -14,8 +13,8 @@
    app.use(express.json());
    app.use(cookieParser());
    app.use(cors(
-    { //origin:'http://localhost:5173',
-       origin: "https://omt-front.vercel.app",
+    {
+       origin: process.env.CLIENT_URL,
        credentials: true }
   ));
 
@@ -64,14 +63,6 @@
    
   app.listen(PORT, async () => {
   console.log(`✅ Server running on port ${PORT}`);
-  // For import member data from sheets to db
-  // await bulkImport();
-  // console.log("✅ Bulk import complete. Exiting...");
-  // process.exit(0); // stop after import
-  // For import Places data from sheets to db
-   // await bulkImportPlaces();
-   //  console.log("✅ Bulk import complete. Exiting...");
-   //  process.exit(0); // stop after import
 });
 
 
